@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -50,7 +51,15 @@ func (g *game) Update() error {
 // Mise à jour de l'état du jeu à l'écran titre.
 func (g *game) titleUpdate() bool {
 	g.stateFrame = g.stateFrame % globalBlinkDuration
-	return inpututil.IsKeyJustPressed(ebiten.KeyEnter)
+	//attendre la connexion de l autre//
+	if !g.otherReady {
+		_, err := g.reader.ReadString('\n')
+		if err != nil {
+			log.Fatal(err)
+		}
+		g.otherReady = true
+	}
+	return g.otherReady && inpututil.IsKeyJustPressed(ebiten.KeyEnter)
 }
 
 // Mise à jour de l'état du jeu lors de la sélection des couleurs.

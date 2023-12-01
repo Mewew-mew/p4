@@ -5,12 +5,12 @@ import (
 	"net"
 )
 
-func main() {
+func conn2() bool {
 
 	conn, err := net.Dial("tcp", "localhost:8080")
 	if err != nil {
 		log.Println("Dial error:", err)
-		return
+		return false
 	}
 	defer conn.Close()
 
@@ -22,7 +22,8 @@ func main() {
 
 	if err != nil {
 		log.Println("write error:", err)
-		return
+		return false
 	}
+	return true
 
 }

@@ -37,6 +37,11 @@ func main() {
 		log.Println("Message lu", i+1, " :", message)
 	}
 
+	log.Println("tous les messages sont envoyés")
+
+	for {
+	}
+
 	//time.Sleep(10 * time.Second)
 
 }

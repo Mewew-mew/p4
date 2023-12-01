@@ -1,5 +1,7 @@
 package main
 
+import "bufio"
+
 // Structure de données pour représenter l'état courant du jeu.
 type game struct {
 	gameState     int
@@ -10,6 +12,9 @@ type game struct {
 	turn          int
 	tokenPosition int
 	result        int
+	otherReady    bool
+	reader        *bufio.Reader
+	readChan      chan bool
 }
 
 // Constantes pour représenter la séquence de jeu actuelle (écran titre,
