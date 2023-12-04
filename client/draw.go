@@ -79,9 +79,9 @@ func (g game) resultDraw(screen *ebiten.Image) {
 
 	message := "Égalité"
 	if g.result == p1wins {
-		message = "Gagné !"
+		message = "joueurs 1 WIN !"
 	} else if g.result == p2wins {
-		message = "Perdu…"
+		message = "joueur 2 WIN"
 	}
 	text.Draw(screen, message, smallFont, 300, 400, globalTextColor)
 }

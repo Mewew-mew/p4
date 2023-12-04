@@ -1,12 +1,12 @@
 package main
 
 import (
-	"log"
 	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
+
 
 // Mise à jour de l'état du jeu en fonction des entrées au clavier.
 func (g *game) Update() error {
@@ -51,14 +51,15 @@ func (g *game) Update() error {
 // Mise à jour de l'état du jeu à l'écran titre.
 func (g *game) titleUpdate() bool {
 	g.stateFrame = g.stateFrame % globalBlinkDuration
-	//attendre la connexion de l autre//
+
 	if !g.otherReady {
-		_, err := g.reader.ReadString('\n')
-		if err != nil {
-			log.Fatal(err)
+		select {
+		case <-g.readChan:
+			g.otherReady = true
+		default:
 		}
-		g.otherReady = true
 	}
+
 	return g.otherReady && inpututil.IsKeyJustPressed(ebiten.KeyEnter)
 }
 
@@ -122,6 +123,7 @@ func (g *game) p1Update() (int, int) {
 	return lastXPositionPlayed, lastYPositionPlayed
 }
 
+/*
 // Gestion de la position du prochain pion joué par le joueur 2 et
 // du moment où ce pion est joué.
 func (g *game) p2Update() (int, int) {
@@ -132,6 +134,22 @@ func (g *game) p2Update() (int, int) {
 	}
 	g.turn = p1Turn
 	return position, yPos
+}
+*/
+
+// Gestion du moment où le prochain pion est joué par le joueur 2.
+func (g *game) p2Update() (int, int) {
+	lastXPositionPlayed := -1
+	lastYPositionPlayed := -1
+	if inpututil.IsKeyJustPressed(ebiten.KeyDown) || inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		if updated, yPos := g.updateGrid(p2Token, g.tokenPosition); updated {
+			g.turn = p1Turn
+			lastXPositionPlayed = g.tokenPosition
+			lastYPositionPlayed = yPos
+		}
+	}
+	return lastXPositionPlayed, lastYPositionPlayed
+
 }
 
 // Mise à jour de l'état du jeu à l'écran des résultats.
