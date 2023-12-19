@@ -27,6 +27,7 @@ var (
 	globalGridColor       color.Color = color.NRGBA{R: 119, G: 136, B: 153, A: 255}
 	globalTextColor       color.Color = color.NRGBA{R: 25, G: 25, B: 5, A: 255}
 	globalSelectColor     color.Color = color.NRGBA{R: 25, G: 25, B: 5, A: 255}
+	globalSelectColorP2   color.Color = color.NRGBA{R: 255, G: 0, B: 0, A: 255}
 	smallFont             font.Face
 	largeFont             font.Face
 	globalTokenColors     [globalNumColor]color.Color = [globalNumColor]color.Color{

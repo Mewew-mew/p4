@@ -10,8 +10,7 @@ type game struct {
 	turn          int
 	tokenPosition int
 	result        int
-	readChan chan bool
-	otherReady bool
+	server        *server
 }
 
 // Constantes pour représenter la séquence de jeu actuelle (écran titre,

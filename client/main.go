@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
 	"bufio"
+	"log"
 	"net"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -42,7 +42,6 @@ func init() {
 // Création, paramétrage et lancement du jeu.
 func main() {
 
-
 	conn, err := net.Dial("tcp", "localhost:8080")
 	if err != nil {
 		log.Print("dial error: ", err)
@@ -50,10 +49,8 @@ func main() {
 	}
 
 	g := game{}
-
-	g.readChan = make(chan bool, 1)
-	go handleRead(bufio.NewReader(conn), g.readChan)
-
+	g.server = &server{handler: *bufio.NewReadWriter(bufio.NewReader(conn), bufio.NewWriter(conn)), wait: false, ready: false, channel: make(chan string)}
+	go g.server.receive()
 
 	ebiten.SetWindowTitle("Programmation système : projet puissance 4")
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
