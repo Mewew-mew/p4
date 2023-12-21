@@ -16,34 +16,34 @@ func (g *game) Update() error {
 	case titleState:
 		if g.titleUpdate() {
 			g.gameState++
-			g.server.ready = false
+			g.server.ready = false //on remet le server à non prêt 
 		}
 	case colorSelectState:
 		if g.colorSelectUpdate() {
 			g.gameState++
-			g.server.ready = false
-			g.server.wait = false
+			g.server.ready = false //on remet le server à non prêt 
+			g.server.wait = false //on remet le server en mode attente
 		}
 	case playState:
 		g.tokenPosUpdate()
 		var lastXPositionPlayed int
 		var lastYPositionPlayed int
 		if g.turn == p1Turn {
-			lastXPositionPlayed, lastYPositionPlayed = g.p1Update()
+			lastXPositionPlayed, lastYPositionPlayed = g.p1Update()// on met les coordonées dans la grille J1
 		} else {
-			lastXPositionPlayed, lastYPositionPlayed = g.p2Update()
+			lastXPositionPlayed, lastYPositionPlayed = g.p2Update()// on met les coordonées dans la grille J2
 		}
 		if lastXPositionPlayed >= 0 {
 			finished, result := g.checkGameEnd(lastXPositionPlayed, lastYPositionPlayed)
-			if finished {
+			if finished { //verification de si c'est fini
 				g.result = result
 				g.gameState++
-				if g.turn == p2Turn {
-					g.server.send(fmt.Sprint(lastXPositionPlayed, ", ", "true"))
+				if g.turn == p2Turn { 
+					g.server.send(fmt.Sprint(lastXPositionPlayed, ", ", "true"))//on envoie la derniere coordonnées du J2 et la partie est fini
 				}
 			} else {
 				if g.turn == p2Turn {
-					g.server.send(fmt.Sprint(lastXPositionPlayed, ", ", "false"))
+					g.server.send(fmt.Sprint(lastXPositionPlayed, ", ", "false"))//on envoie la derniere coordonnées du J2 et la partie n'est fini
 				}
 			}
 		}
@@ -120,7 +120,7 @@ func (g *game) colorSelectUpdate() bool {
 
 	g.p1Color = line*globalNumColorLine + col
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && (g.p1Color != g.p2Color) {
 		changes = true
 		g.server.wait = true
 	}
@@ -173,7 +173,6 @@ func (g *game) p2Update() (int, int) {
 		// Do nothing
 	}
 	return lastXPositionPlayed, lastYPositionPlayed
-
 }
 
 // Mise à jour de l'état du jeu à l'écran des résultats.

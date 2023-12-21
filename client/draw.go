@@ -33,7 +33,7 @@ func (g game) titleDraw(screen *ebiten.Image) {
 	text.Draw(screen, "Année 2023-2024", smallFont, 210, 230, globalTextColor)
 
 	if g.stateFrame >= globalBlinkDuration/3 {
-		text.Draw(screen, "Appuyez sur entrée", smallFont, 210, 500, globalTextColor)
+		text.Draw(screen, "En attente de l'autre joueur", smallFont, 210, 500, globalTextColor)
 	}
 }
 
@@ -50,7 +50,7 @@ func (g game) colorSelectDraw(screen *ebiten.Image) {
 
 		if numColor == g.p1Color {
 			vector.DrawFilledCircle(screen, float32(globalTileSize/2+xPos*globalTileSize), float32(globalTileSize+globalTileSize/2+yPos*globalTileSize), globalTileSize/2, globalSelectColor, true)
-		} else if numColor == g.p2Color {
+		} else if numColor == g.p2Color { // on verifie ici ce que le J2 à comme couleur
 			vector.DrawFilledCircle(screen, float32(globalTileSize/2+xPos*globalTileSize), float32(globalTileSize+globalTileSize/2+yPos*globalTileSize), globalTileSize/2, globalSelectColorP2, true)
 		}
 
@@ -81,7 +81,7 @@ func (g game) resultDraw(screen *ebiten.Image) {
 
 	message := "Égalité"
 	if g.result == p1wins {
-		message = "joueurs 1 WIN !"
+		message = "joueur 1 WIN !"
 	} else if g.result == p2wins {
 		message = "joueur 2 WIN"
 	}

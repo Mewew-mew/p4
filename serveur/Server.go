@@ -83,8 +83,8 @@ func main() {
 				for {
 					select {
 					case msg := <-s.player1.channel: // Si le joueur 1 a envoyé un message
-						tmp := strings.Split(msg, ", ") // On récupère les données (coords, partie finie ?)
-						s.player2.send(tmp[0])          // On envoie les coords au joueur 2
+						tmp := strings.Split(msg, ", ") // On récupère les données (coordonnés, partie finie ?)
+						s.player2.send(tmp[0])          // On envoie les coordonnés au joueur 2
 						if tmp[1] == "true" {           // Si la partie est finie
 							isPlaying = false // On arrête la boucle
 						}
@@ -140,6 +140,7 @@ func main() {
 	}
 }
 
+//envoie au deux joueurs
 func (s *Server) broadcast(msg string) {
 	s.player1.send(msg)
 	s.player2.send(msg)
